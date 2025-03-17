@@ -15,13 +15,25 @@ namespace MyApp
         public void ShowTask(){
             Console.WriteLine($"Task : {Content}, Time created {Time_created}");
         }
-    }
+    };
+
     internal class Program
     {
+        static void createTask(){
+        Console.WriteLine("Enter New Task");
+        // TODO 7 : Replace this approach instead of checking for null, just check if the user
+        //entered a null value and re-prompt
+        string taskContent = Console.ReadLine() ?? "Un-named Task";
+        // timestamp automatically created
+        string timeCreated = Convert.ToString(DateTime.Now);
+        Task newTask = new Task(taskContent,timeCreated );
+    }
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("Im on my first C# application");
+            createTask();
+
+            
         }
     }
 }

@@ -1,5 +1,5 @@
-TODO 2 : create a creat_task function
-TODO 3 : create a way to display all task
+1/2
+
 TODO 4 : create a way to update a task
 TODO 5 : create a way to delete a creat_task
 TODO 6 : hopefully youre finished

@@ -17,9 +17,13 @@ namespace MyApp
         }
     };
 
+
     internal class Program
     {
-        static void createTask(){
+        // array to store all task
+           List<Task> taskList = new List<Task>();
+
+        static void createTask(List<Task> taskList){
         Console.WriteLine("Enter New Task");
         // TODO 7 : Replace this approach instead of checking for null, just check if the user
         //entered a null value and re-prompt
@@ -27,6 +31,8 @@ namespace MyApp
         // timestamp automatically created
         string timeCreated = Convert.ToString(DateTime.Now);
         Task newTask = new Task(taskContent,timeCreated );
+        // add the newly created task to the taskList
+        taskList.Add(newTask);
     }
 
         static void Main(string[] args)

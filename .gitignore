@@ -1,0 +1,30 @@
+# Visual Studio generated files
+.vs/
+*.suo
+*.user
+*.sln.docstates
+*.cachefile
+*.vcxproj.user
+*.rsp
+
+# Build output directories
+bin/
+obj/
+
+# Package restore folder
+packages/
+
+# NuGet cache
+.nuget/
+
+# Test results
+TestResults/
+
+# Build logs
+*.log
+
+# Project specific debug files (if any)
+*.pdb
+
+# Other temporary files
+*_ReSharper*/

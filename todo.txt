@@ -1,8 +1,8 @@
-TODO 2 : create a main program method
-TODO 3 : create a menu method for all user actions
+TODO COUNTER ( 2/2 )
 TODO 4 : create a add todo method
 TODO 5 : create a list todo list method
 TODO 6 : create a view todo method
 TODO 7 : creata an update/edit todo method
 TODO 8 : create a marked as done method
 TODO 9 : handle user inputs
+TODO 10 : handle the possibilty of null user inputs warnings

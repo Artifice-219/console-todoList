@@ -18,6 +18,33 @@ namespace Myapp{
             Console.WriteLine($"Task : : {Content} , Time Created {Time_created}");
         }
     }
+    
+    internal class Program{
+
+        static void Menu(){
+            Console.WriteLine("Select 1 : Create New Tasks");
+            Console.WriteLine("Select 2 : To View Tasks");
+            Console.WriteLine("Select 3 : To Edit Tasks");
+            Console.WriteLine("Select 4 : To Finished a  Task");
+
+            string userChoice = Console.ReadLine();
+            // convert userChoice to string unnecesarry but we can the language more with this
+            try{
+                int userChoiceNum = int.Parse(userChoice);
+                // input feedback
+                Console.WriteLine($"You have selected {userChoiceNum}");
+            }
+            catch(FormatException){
+                Console.WriteLine("Invalid Choice, Please select only from the provided prompt");
+            }
+
+        }
+        // main method
+        static void Main(string[] args){
+            // load main menu
+            Menu();
+        }
+    }
 }
 // using System;
 // using System.Collections.Generic;

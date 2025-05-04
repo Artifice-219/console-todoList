@@ -1,6 +1,4 @@
-TODO COUNTER ( 2/2 )
-TODO 4 : create a add todo method
-TODO 5 : create a list todo list method
+TODO COUNTER ( 2/3 )
 TODO 6 : create a view todo method
 TODO 7 : creata an update/edit todo method
 TODO 8 : create a marked as done method

@@ -1,6 +1,6 @@
-TODO COUNTER ( 2/3 )
-TODO 6 : create a view todo method
+TODO COUNTER ( 3/3 )
 TODO 7 : creata an update/edit todo method
 TODO 8 : create a marked as done method
 TODO 9 : handle user inputs
 TODO 10 : handle the possibilty of null user inputs warnings
+TODO 11 : make some styling for the main menu

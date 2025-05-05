@@ -22,6 +22,54 @@ namespace Myapp{
     }
     
     internal class Program{
+        static void editTask(List<TodoItem> taskList){
+            // shows all task and then ask which task to edit
+            listTask(taskList);
+            Console.WriteLine();
+            Console.WriteLine("Select which task index to edit. If no index is provided will defualt to zero");
+            string input = Console.ReadLine() ?? "0";
+            int userChoice;
+            if(int.TryParse(input, out userChoice)){
+                // successfull parsing
+                Console.WriteLine($"Index : {userChoice} selected");
+            }
+            else{
+                // if un succesfull parsing go back to main menu
+                Console.WriteLine("Invalid Input. Redirecting to main menu");
+                // call main menu after this line
+            }
+            // start editing the selected task:
+            Console.WriteLine("Editting task : ......");
+            Console.WriteLine();
+            Console.WriteLine("Enter new task's details");
+            string newTaskDetails = Console.ReadLine() ?? " ";
+            string newTaskCreationDate = Convert.ToString(DateTime.Now);
+            // show the uneditied task details and ask for confirmation
+            Console.WriteLine("Current Task : ");
+            Console.WriteLine($"Task : {taskList[userChoice].Content}");
+            Console.WriteLine($"Created at : {taskList[userChoice].Time_created}");
+            Console.WriteLine("Will be changed to : >>>>>>>> ");
+            Console.WriteLine();
+            Console.WriteLine($"Task : {newTaskDetails}");
+            Console.WriteLine($"Time Created : {newTaskCreationDate}");
+            Console.WriteLine("Press y to confirm else press any key to cancel");
+            // reading the user input's keypress
+            ConsoleKeyInfo key = Console.ReadKey(true);
+            
+            if(key.KeyChar == 'y'){
+                taskList[userChoice].Content = newTaskDetails;
+                taskList[userChoice].Time_created = newTaskCreationDate;
+                Console.WriteLine("Task succesfully editted");
+                listTask(taskList);
+                Console.WriteLine();
+                Menu();
+            }
+            else{
+                Console.WriteLine("Action cancelled by user");
+                Menu();
+            }
+
+        }
         static void viewTask(List<TodoItem> taskList){
             // shows all of the task and then ask for which task to display
             listTask(taskList);
@@ -42,7 +90,6 @@ namespace Myapp{
             Console.WriteLine($"Showing details for task indexed at : {userChoice}");
             Console.WriteLine($"Task Details : {taskList[userChoice].Content}");
             Console.WriteLine($"Created : {taskList[userChoice].Time_created}");
-             
         }
         static void listTask(List<TodoItem> taskList){
             Console.WriteLine("Showing all task");
@@ -102,6 +149,7 @@ namespace Myapp{
             Menu();
             listTask(TaskList);
             viewTask(TaskList);
+            editTask(TaskList);
         }
     }
 }

@@ -18,8 +18,7 @@ namespace Myapp{
 
         // internal method to show details of this todo item
         public string showDetails(){
-            //TODO 14 : THE SHOWING OF THE TASK INDEX WILL BE DUPLICATED HERE WHEN CALLING LISTTASK()
-            return $"Task {index} : {Content} --- Time Created {Time_created}";
+            return $"{Content} --- Time Created {Time_created}";
         }
     }
     
@@ -102,7 +101,7 @@ namespace Myapp{
         {
             Console.WriteLine(separator);
             //TODO 15 : replace the task index with the actul content of the task instead of the selected index
-            Console.WriteLine(infoColor + $"Editing task at index: {userChoice}" + resetColor);
+            Console.WriteLine(infoColor + $"Editing task {taskList[userChoice].Content}" + resetColor);
             Console.WriteLine();
 
             Console.Write(promptColor + "Enter new task details: " + resetColor);
@@ -273,6 +272,7 @@ namespace Myapp{
         Console.WriteLine($"{choiceColor}Select 2:{resetColor} View Tasks");
         Console.WriteLine($"{choiceColor}Select 3:{resetColor} Edit Tasks");
         Console.WriteLine($"{choiceColor}Select 4:{resetColor} Finish a Task");
+        Console.WriteLine($"{choiceColor}Select 5:{resetColor} To Exit");
         Console.WriteLine(separator);
         Console.Write("Enter your choice: "); // Changed WriteLine to Write to keep input on the same line
 
@@ -298,6 +298,9 @@ namespace Myapp{
                     break;
                     case 4 : 
                         markAsDone(TaskList);
+                    break;
+                    case 5 :
+                    Environment.Exit(0);
                     break;
                 } 
         }

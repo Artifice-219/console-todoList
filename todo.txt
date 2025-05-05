@@ -1,2 +1,1 @@
 TODO COUNTER ( 3/4 )
-TODO 13 : make the parsing to a user input a function

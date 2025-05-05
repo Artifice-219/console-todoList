@@ -18,142 +18,297 @@ namespace Myapp{
 
         // internal method to show details of this todo item
         public string showDetails(){
+            //TODO 14 : THE SHOWING OF THE TASK INDEX WILL BE DUPLICATED HERE WHEN CALLING LISTTASK()
             return $"Task {index} : {Content} --- Time Created {Time_created}";
         }
     }
     
     internal class Program{
-        static void markAsDone(List<TodoItem> taskList){
-            listTask(taskList);
-            Console.WriteLine("Select which task index to marked as 'Done'");
-            string input = Console.ReadLine() ?? "0";
-            int userChoice;
-            if(int.TryParse(input, out userChoice)){
-                // successfull parsing
-                Console.WriteLine($"Index : {userChoice} selected");
-            }
-            else{
-                // if un succesfull parsing go back to main menu
-                Console.WriteLine("Invalid Input. Redirecting to main menu");
-                // call main menu after this line
-            }
-            // delete the selected task in the taskList
+       static void markAsDone(List<TodoItem> taskList)
+{
+    // Define ANSI escape codes for styling
+    const string headerColor = "\x1b[32m"; // Green
+    const string promptColor = "\x1b[33m"; // Yellow
+    const string successColor = "\x1b[36m"; // Cyan
+    const string errorColor = "\x1b[31m"; // Red
+    const string resetColor = "\x1b[0m";
+    const string  infoColor = "\x1b[32m";
+    const string separator = "--------------------------------------------------";
+
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine(headerColor + "             Mark Task as Done             " + resetColor);
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine();
+
+    listTask(taskList); // Display the list of tasks
+
+    Console.WriteLine();
+    Console.Write(promptColor + "Select the index of the task to mark as 'Done': " + resetColor);
+    string input = Console.ReadLine() ?? "0";
+
+    if (int.TryParse(input, out int userChoice))
+    {
+        Console.WriteLine(infoColor + $"Index: {userChoice} selected." + resetColor);
+        if (userChoice >= 0 && userChoice < taskList.Count)
+        {
+            string taskContent = taskList[userChoice].Content; // Store task content for confirmation
             taskList.RemoveAt(userChoice);
-            // redisplay all task for use confirmation
-            listTask(taskList);
-            
+            Console.WriteLine(successColor + $"Task '{taskContent}' marked as done and removed." + resetColor);
+            Console.WriteLine("\n" + separator + "\n");
+            listTask(taskList); // Redisplay the updated task list
+            Console.WriteLine("\n" + separator + "\n");
         }
-        static void editTask(List<TodoItem> taskList){
-            // shows all task and then ask which task to edit
-            listTask(taskList);
+        else
+        {
+            Console.WriteLine(errorColor + $"Error: Invalid index '{userChoice}'. Please select a valid index from the list." + resetColor + "\n");
+        }
+    }
+    else
+    {
+        Console.WriteLine(errorColor + $"Error: Invalid input '{input}'. Redirecting to main menu." + resetColor + "\n");
+    }
+    Console.Clear();
+    Menu(taskList);
+}
+       static void editTask(List<TodoItem> taskList)
+{
+    // Define ANSI escape codes for styling
+    const string headerColor = "\x1b[32m"; // Green
+    const string promptColor = "\x1b[33m"; // Yellow
+    const string infoColor = "\x1b[36m"; // Cyan
+    const string errorColor = "\x1b[31m"; // Red
+    const string confirmationColor = "\x1b[34m"; // Blue
+    const string resetColor = "\x1b[0m";
+    const string successColor = "\x1b[32m";
+    const string separator = "--------------------------------------------------";
+
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine(headerColor + "               Edit Task Details              " + resetColor);
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine();
+
+    listTask(taskList); // Display the list of tasks
+
+    Console.WriteLine();
+    Console.Write(promptColor + "Select which task index to edit (default is 0): " + resetColor);
+    string input = Console.ReadLine() ?? "0";
+
+    int userChoice = 0; // Initialize with the default value
+
+    if (int.TryParse(input, out userChoice))
+    {
+        Console.WriteLine(infoColor + $"Index: {userChoice} selected." + resetColor);
+        if (userChoice >= 0 && userChoice < taskList.Count)
+        {
+            Console.WriteLine(separator);
+            //TODO 15 : replace the task index with the actul content of the task instead of the selected index
+            Console.WriteLine(infoColor + $"Editing task at index: {userChoice}" + resetColor);
             Console.WriteLine();
-            Console.WriteLine("Select which task index to edit. If no index is provided will defualt to zero");
-            string input = Console.ReadLine() ?? "0";
-            int userChoice;
-            if(int.TryParse(input, out userChoice)){
-                // successfull parsing
-                Console.WriteLine($"Index : {userChoice} selected");
-            }
-            else{
-                // if un succesfull parsing go back to main menu
-                Console.WriteLine("Invalid Input. Redirecting to main menu");
-                // call main menu after this line
-            }
-            // start editing the selected task:
-            Console.WriteLine("Editting task : ......");
-            Console.WriteLine();
-            Console.WriteLine("Enter new task's details");
+
+            Console.Write(promptColor + "Enter new task details: " + resetColor);
             string newTaskDetails = Console.ReadLine() ?? " ";
             string newTaskCreationDate = Convert.ToString(DateTime.Now);
-            // show the uneditied task details and ask for confirmation
-            Console.WriteLine("Current Task : ");
-            Console.WriteLine($"Task : {taskList[userChoice].Content}");
-            Console.WriteLine($"Created at : {taskList[userChoice].Time_created}");
-            Console.WriteLine("Will be changed to : >>>>>>>> ");
+
+            Console.WriteLine(separator);
+            Console.WriteLine(infoColor + "Current Task: " + resetColor);
+            Console.WriteLine(infoColor + $"  Task: {taskList[userChoice].Content}" + resetColor);
+            Console.WriteLine(infoColor + $"  Created at: {taskList[userChoice].Time_created}" + resetColor);
+            Console.WriteLine(confirmationColor + "Will be changed to: >>>>>>>> " + resetColor);
             Console.WriteLine();
-            Console.WriteLine($"Task : {newTaskDetails}");
-            Console.WriteLine($"Time Created : {newTaskCreationDate}");
-            Console.WriteLine("Press y to confirm else press any key to cancel");
-            // reading the user input's keypress
+            Console.WriteLine(infoColor + $"  Task: {newTaskDetails}" + resetColor);
+            Console.WriteLine(infoColor + $"  Time Created: {newTaskCreationDate}" + resetColor);
+            Console.WriteLine(separator);
+
+            Console.Write(promptColor + "Press " + confirmationColor + "y" + resetColor + " to confirm, or any other key to cancel: ");
             ConsoleKeyInfo key = Console.ReadKey(true);
-            
-            if(key.KeyChar == 'y'){
+
+            if (key.KeyChar == 'y' || key.KeyChar == 'Y')
+            {
                 taskList[userChoice].Content = newTaskDetails;
                 taskList[userChoice].Time_created = newTaskCreationDate;
-                Console.WriteLine("Task succesfully editted");
+                Console.WriteLine(successColor + "\nTask successfully edited." + resetColor);
                 listTask(taskList);
                 Console.WriteLine();
-                Menu();
             }
-            else{
-                Console.WriteLine("Action cancelled by user");
-                Menu();
+            else
+            {
+                Console.WriteLine(infoColor + "\nEdit action cancelled by user." + resetColor);
             }
+            Console.WriteLine(separator + "\n");
+            Menu(taskList);
+        }
+        else
+        {
+            Console.WriteLine(errorColor + $"Error: Invalid index '{userChoice}'. Please select a valid index from the list." + resetColor + "\n");
+            Console.Clear();
+            Menu(taskList); // Go back to menu on invalid index
+        }
+    }
+    else
+    {
+        Console.WriteLine(errorColor + $"Error: Invalid input '{input}'. Redirecting to main menu." + resetColor + "\n");
+        Console.Clear();
+        Menu(taskList); // Go back to menu on invalid input
+    }
+}
+        static void viewTask(List<TodoItem> taskList)
+{
+    // Define ANSI escape codes for styling
+    const string headerColor = "\x1b[32m"; // Green
+    const string promptColor = "\x1b[33m"; // Yellow
+    const string infoColor = "\x1b[36m"; // Cyan
+    const string errorColor = "\x1b[31m"; // Red
+    const string resetColor = "\x1b[0m";
+    const string separator = "--------------------------------------------------";
 
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine(headerColor + "               View Task Details              " + resetColor);
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine();
+
+    listTask(taskList); // Display the list of tasks
+
+    Console.WriteLine();
+    Console.Write(promptColor + "Select which task index to view (default is 0): " + resetColor);
+    string input = Console.ReadLine() ?? "0";
+
+    int userChoice = 0; // Initialize with the default value
+
+    if (int.TryParse(input, out userChoice))
+    {
+        Console.WriteLine(infoColor + $"Index: {userChoice} selected." + resetColor);
+        if (userChoice >= 0 && userChoice < taskList.Count)
+        {
+            Console.WriteLine(separator);
+            Console.WriteLine(infoColor + $"Showing details for task at index: {userChoice}" + resetColor);
+            Console.WriteLine(infoColor + $"Task Details: {taskList[userChoice].Content}" + resetColor);
+            Console.WriteLine(infoColor + $"Created: {taskList[userChoice].Time_created}" + resetColor);
+            Console.WriteLine(separator + "\n");
         }
-        static void viewTask(List<TodoItem> taskList){
-            // shows all of the task and then ask for which task to display
-            listTask(taskList);
-            Console.WriteLine();
-            Console.WriteLine("Select which task index to view. If no index is provided will default to zero");
-            string input = Console.ReadLine() ?? "0";
-            // cast input as int
-            int userChoice;
-            if(int.TryParse(input, out userChoice)){
-                // succesfull parsing
-                Console.WriteLine($"Index : {userChoice} selected");
-            }
-            else{
-                // if the parsing was unsuccessfull just go back to main menu ?
-                // this might prove idiotic in the long run
-                Console.WriteLine("Invalid input.");
-            }
-            Console.WriteLine($"Showing details for task indexed at : {userChoice}");
-            Console.WriteLine($"Task Details : {taskList[userChoice].Content}");
-            Console.WriteLine($"Created : {taskList[userChoice].Time_created}");
+        else
+        {
+            Console.WriteLine(errorColor + $"Error: Invalid index '{userChoice}'. Please select a valid index from the list." + resetColor + "\n");
         }
-        static void listTask(List<TodoItem> taskList){
-            Console.WriteLine("Showing all task");
-            // loops to every item in the taskList and display all its contents
-            for(int i=0; i <= taskList.Count - 1; ++i){
-                // set the index
-                taskList[i].index = i;
-                Console.WriteLine(taskList[i].showDetails()); 
-            }
+    }
+    else
+    {
+        Console.WriteLine(errorColor + $"Error: Invalid input '{input}'. Please enter a valid number." + resetColor + "\n");
+    }
+    Menu(taskList);
+}
+    static void listTask(List<TodoItem> taskList){
+        // Define ANSI escape codes for styling
+        const string headerColor = "\x1b[32m"; // Green
+        const string indexColor = "\x1b[33m"; // Yellow
+        const string detailColor = "\x1b[36m"; // Cyan
+        const string resetColor = "\x1b[0m";
+        const string separator = "--------------------------------------------------";
+
+        Console.WriteLine(headerColor + separator + resetColor);
+        Console.WriteLine(headerColor + "                 Current Tasks                  " + resetColor);
+        Console.WriteLine(headerColor + separator + resetColor);
+        Console.WriteLine();
+
+        if (taskList.Count == 0)
+        {
+            Console.WriteLine(detailColor + "No tasks in the list." + resetColor + "\n");
+            return;
         }
+
+        // Loops through each item in the taskList and displays its contents
+        for (int i = 0; i < taskList.Count; ++i)
+        {
+            // Set the index
+            taskList[i].index = i;
+            Console.WriteLine($"{indexColor}Task [{i}]:{resetColor} {taskList[i].showDetails()}");
+        }
+        Console.WriteLine("\n" + separator + "\n");
+    }
         // creates a new task and then append that to the task container
-        static void addTask(List<TodoItem> taskList){
-            Console.WriteLine("Creating a new Task");
-            Console.WriteLine("Enter new task : ");
-            string task = Console.ReadLine() ?? "Un-named task";
-            // getting the current time
-            string time_created = Convert.ToString(DateTime.Now);
-            // making an instance of the todoItem class
-            TodoItem todoItem = new TodoItem(task, time_created);
-            taskList.Add(todoItem);
-            Console.WriteLine($"New task {todoItem.Content} is succesfully added to task list");
+        static void addTask(List<TodoItem> taskList)
+{
+    // Define ANSI escape codes for styling
+    const string headerColor = "\x1b[32m"; // Green
+    const string promptColor = "\x1b[33m"; // Yellow
+    const string successColor = "\x1b[36m"; // Cyan
+    const string resetColor = "\x1b[0m";
+    const string separator = "--------------------------------------------------";
 
+    // clear the console first before displaying anything
+    Console.Clear();
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine(headerColor + "           Creating a New Task           " + resetColor);
+    Console.WriteLine(headerColor + separator + resetColor);
+    Console.WriteLine();
+
+    Console.Write(promptColor + "Enter new task: " + resetColor);
+    string task = Console.ReadLine() ?? "Un-named task";
+
+    // getting the current time
+    string time_created = Convert.ToString(DateTime.Now);
+
+    // making an instance of the todoItem class
+    TodoItem todoItem = new TodoItem(task, time_created);
+    taskList.Add(todoItem);
+
+    Console.WriteLine(successColor + $"New task '{todoItem.Content}' is successfully added to the task list." + resetColor);
+    Console.WriteLine(separator + "\n");
+    // after successfully adding a task call the main menu once again
+    Menu(taskList);
+}
+    static void Menu(List<TodoItem> TaskList){
+        // Define some ANSI escape codes for styling
+        const string separator = "--------------------------------------------------";
+        const string headerColor = "\x1b[32m"; // Green
+        const string instructionColor = "\x1b[33m"; // Yellow
+        const string choiceColor = "\x1b[36m"; // Cyan
+        const string resetColor = "\x1b[0m";
+
+        Console.WriteLine(headerColor + separator + resetColor);
+        Console.WriteLine(headerColor + "               Task Manager Menu               " + resetColor);
+        Console.WriteLine(headerColor + separator + resetColor);
+        Console.WriteLine();
+        Console.WriteLine(instructionColor + "Choose an action (if none is provided, defaulting to 0):" + resetColor);
+        Console.WriteLine($"{choiceColor}Select 1:{resetColor} Create New Tasks");
+        Console.WriteLine($"{choiceColor}Select 2:{resetColor} View Tasks");
+        Console.WriteLine($"{choiceColor}Select 3:{resetColor} Edit Tasks");
+        Console.WriteLine($"{choiceColor}Select 4:{resetColor} Finish a Task");
+        Console.WriteLine(separator);
+        Console.Write("Enter your choice: "); // Changed WriteLine to Write to keep input on the same line
+
+        string userChoice = Console.ReadLine() ?? "0";
+
+        Console.WriteLine(separator); // Add separator after input
+
+        try
+        {
+            int userChoiceNum = int.Parse(userChoice);
+            Console.WriteLine($"You have selected: {headerColor}{userChoiceNum}{resetColor}"); // Styled feedback
+
+
+            switch(userChoiceNum){
+                    case 1 :
+                        addTask(TaskList);
+                    break;
+                    case 2 :
+                        viewTask(TaskList);
+                    break;
+                    case 3 :
+                        editTask(TaskList);
+                    break;
+                    case 4 : 
+                        markAsDone(TaskList);
+                    break;
+                } 
         }
-        static void Menu(){
-            // TODO 11 : THIS MENU IS NOT FUNCTIONAL
-            Console.WriteLine("Choose an action if none is provided, defaulting to 0");
-            Console.WriteLine("Select 1 : Create New Tasks");
-            Console.WriteLine("Select 2 : To View Tasks");
-            Console.WriteLine("Select 3 : To Edit Tasks");
-            Console.WriteLine("Select 4 : To Finished a  Task");
-
-            string userChoice = Console.ReadLine() ?? "0";
-            // convert userChoice to string unnecesarry but we can the language more with this
-            try{
-                int userChoiceNum = int.Parse(userChoice);
-                // input feedback
-                Console.WriteLine($"You have selected {userChoiceNum}");
-            }
-            catch(FormatException){
-                Console.WriteLine("Invalid Choice, Please select only from the provided prompt");
-            }
-
+        catch (FormatException)
+        {
+            Console.WriteLine($"Invalid Choice: {instructionColor}{userChoice}{resetColor}. Please select only from the provided prompt.");
         }
+
+     Console.WriteLine(separator + "\n"); // Add a final separator and newline for better spacing
+     Console.Clear();
+}
         // main method
         static void Main(string[] args){
             List<TodoItem> TaskList = new List<TodoItem>();
@@ -167,11 +322,7 @@ namespace Myapp{
             TaskList.Add(todoItem3);
             TaskList.Add(todoItem4);
             // load main menu
-            Menu();
-            listTask(TaskList);
-            viewTask(TaskList);
-            editTask(TaskList);
-            markAsDone(TaskList);
+            Menu(TaskList);
         }
     }
 }

@@ -1,7 +1,2 @@
-TODO COUNTER ( 1/4 )
-TODO 8 : create a marked as done method
-TODO 9 : handle user inputs
-TODO 10 : handle the possibilty of null user inputs warnings
-TODO 11 : make some styling for the main menu
-TODO 12 : Clear the console for every operations
+TODO COUNTER ( 3/4 )
 TODO 13 : make the parsing to a user input a function

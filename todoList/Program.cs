@@ -2,6 +2,7 @@
 // for iterable data structures
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
 
 namespace Myapp{
     class TodoItem{
@@ -22,6 +23,26 @@ namespace Myapp{
     }
     
     internal class Program{
+        static void markAsDone(List<TodoItem> taskList){
+            listTask(taskList);
+            Console.WriteLine("Select which task index to marked as 'Done'");
+            string input = Console.ReadLine() ?? "0";
+            int userChoice;
+            if(int.TryParse(input, out userChoice)){
+                // successfull parsing
+                Console.WriteLine($"Index : {userChoice} selected");
+            }
+            else{
+                // if un succesfull parsing go back to main menu
+                Console.WriteLine("Invalid Input. Redirecting to main menu");
+                // call main menu after this line
+            }
+            // delete the selected task in the taskList
+            taskList.RemoveAt(userChoice);
+            // redisplay all task for use confirmation
+            listTask(taskList);
+            
+        }
         static void editTask(List<TodoItem> taskList){
             // shows all task and then ask which task to edit
             listTask(taskList);
@@ -150,6 +171,7 @@ namespace Myapp{
             listTask(TaskList);
             viewTask(TaskList);
             editTask(TaskList);
+            markAsDone(TaskList);
         }
     }
 }

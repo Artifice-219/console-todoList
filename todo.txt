@@ -4,3 +4,4 @@ TODO 9 : handle user inputs
 TODO 10 : handle the possibilty of null user inputs warnings
 TODO 11 : make some styling for the main menu
 TODO 12 : Clear the console for every operations
+TODO 13 : make the parsing to a user input a function
